@@ -8,7 +8,7 @@ CONFIG(release, debug|release) {
 
 TEMPLATE = app
 TARGET = MyMFD
-CONFIG += c++11
+CONFIG += c++11 console
 DESTDIR = ../../bin
 OBJECTS_DIR = $$MODE/objects
 MOC_DIR = $$MODE/moc
