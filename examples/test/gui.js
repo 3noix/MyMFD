@@ -62,8 +62,32 @@ msgDisplay.innerHTML = pf;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// UJPS ///////////////////////////////////////////////////////////////////////
+// MY MFD /////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+let sendKeyMouse = (keyStr,down) => {
+	if (!useMouseEvents) return;
+	let url = "http://" + target + "/key/" + keyStr + "/" + (down ? "1" : "0");
+	let reqhttp = new XMLHttpRequest();
+	reqhttp.onerror = function() {
+		iError++;
+		msgDisplay.innerHTML = "An error occured (#" + iError + ")";
+	};
+	reqhttp.open("GET",url,true);
+	reqhttp.send();
+};
+
+let sendKeyTouch = (keyStr,down) => {
+	if (!useTouchEvents) return;
+	let url = "http://" + target + "/key/" + keyStr + "/" + (down ? "1" : "0");
+	let reqhttp = new XMLHttpRequest();
+	reqhttp.onerror = function() {
+		iError++;
+		msgDisplay.innerHTML = "An error occured (#" + iError + ")";
+	};
+	reqhttp.open("GET",url,true);
+	reqhttp.send();
+};
+
 let sendButtonMouse = (vji,button,pressed) => {
 	if (!useMouseEvents) return;
 	let url = "http://" + target + "/button/" + vji + "/" + button + "/" + (pressed ? "1" : "0");
@@ -112,42 +136,62 @@ let sendPov = (vji,pov,value) => {
 
 // initialisation
 {
-	let ujpsButtons = document.querySelectorAll("button[data-type=button]");
-	for (let ujpsButton of ujpsButtons) {
-		if (ujpsButton.hasAttribute("data-vjoy") && ujpsButton.hasAttribute("data-number")) {
-			let vji = parseInt(ujpsButton.getAttribute("data-vjoy"));
-			let number = parseInt(ujpsButton.getAttribute("data-number")) - 1;
+	let keys = document.querySelectorAll("button[data-type=key]");
+	for (let key of keys) {
+		if (key.hasAttribute("data-key")){
+			let keyStr = key.getAttribute("data-key");
+			
+			key.addEventListener("mousedown", function() {
+				sendKeyMouse(keyStr,true);
+			});
+			key.addEventListener("mouseup", function() {
+				sendKeyMouse(keyStr,false);
+			});
+			key.addEventListener("touchstart", function() {
+				sendKeyTouch(keyStr,true);
+			});
+			key.addEventListener("touchend", function() {
+				sendKeyTouch(keyStr,false);
+			});
+		}
+	}
+	
+	let buttons = document.querySelectorAll("button[data-type=button]");
+	for (let button of buttons) {
+		if (button.hasAttribute("data-vjoy") && button.hasAttribute("data-number")) {
+			let vji = parseInt(button.getAttribute("data-vjoy"));
+			let number = parseInt(button.getAttribute("data-number")) - 1;
 			if (!isNaN(number)) {
-				ujpsButton.addEventListener("mousedown", function() {
+				button.addEventListener("mousedown", function() {
 					sendButtonMouse(vji,number,true);
 				});
-				ujpsButton.addEventListener("mouseup", function() {
+				button.addEventListener("mouseup", function() {
 					sendButtonMouse(vji,number,false);
 				});
-				ujpsButton.addEventListener("touchstart", function() {
+				button.addEventListener("touchstart", function() {
 					sendButtonTouch(vji,number,true);
 				});
-				ujpsButton.addEventListener("touchend", function() {
+				button.addEventListener("touchend", function() {
 					sendButtonTouch(vji,number,false);
 				});
 			}
 		}
 	}
 
-	let ujpsAxes = document.querySelectorAll("input[type=range]");
-	for (let ujpsAxis of ujpsAxes) {
-		if (ujpsAxis.hasAttribute("data-type") && ujpsAxis.hasAttribute("data-vjoy") && ujpsAxis.hasAttribute("data-number")) {
-			let dataType = ujpsAxis.getAttribute("data-type");
-			let vji = parseInt(ujpsAxis.getAttribute("data-vjoy"));
-			let number = parseInt(ujpsAxis.getAttribute("data-number")) - 1;
+	let axes = document.querySelectorAll("input[type=range]");
+	for (let axis of axes) {
+		if (axis.hasAttribute("data-type") && axis.hasAttribute("data-vjoy") && axis.hasAttribute("data-number")) {
+			let dataType = axis.getAttribute("data-type");
+			let vji = parseInt(axis.getAttribute("data-vjoy"));
+			let number = parseInt(axis.getAttribute("data-number")) - 1;
 			if (dataType == "axis" && !isNaN(number)) {
-				ujpsAxis.addEventListener("input", function() {
-					let f = 0.001 * ujpsAxis.value - 1.0;
+				axis.addEventListener("input", function() {
+					let f = 0.001 * axis.value - 1.0;
 					sendAxis(vji,number,f);
 				});
-				ujpsAxis.setAttribute("min",0);
-				ujpsAxis.setAttribute("max",2000);
-				ujpsAxis.setAttribute("value",1000);
+				axis.setAttribute("min",0);
+				axis.setAttribute("max",2000);
+				axis.setAttribute("value",1000);
 				sendAxis(vji,number,0);
 			}
 		}

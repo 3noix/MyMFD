@@ -22,7 +22,8 @@ win32-msvc*:LIBS += ../../3rdparty/vJoy218SDK-291116/SDK/lib/amd64/vJoyInterface
 SOURCES +=  CODE/main.cpp \
 			CODE/VirtualJoystick.cpp \
 			CODE/VirtualJoystickPrivate.cpp \
-			CODE/HttpServer.cpp
+			CODE/HttpServer.cpp \
+			CODE/KeyStrokeGenerator.cpp
 
 
 RC_FILE += icone.rc

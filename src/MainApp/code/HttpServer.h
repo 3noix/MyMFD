@@ -4,6 +4,7 @@
 
 #include <QMap>
 #include <QHttpServerResponse>
+#include "KeyStrokeGenerator.h"
 class QHttpServer;
 class VirtualJoystick;
 
@@ -29,7 +30,7 @@ class HttpServer
 		
 	private:
 		QHttpServerResponse processFile(const QString &name, const QString &fileName);
-		QHttpServerResponse processKey(uint key, bool bDown);
+		QHttpServerResponse processKey(const QString &keyStr, bool bDown);
 		QHttpServerResponse processButton(uint vj, uint button, bool bPressed);
 		QHttpServerResponse processAxis(uint vj, uint axis, float value);
 		QHttpServerResponse processPov(uint vj, uint pov, float value);
@@ -37,6 +38,7 @@ class HttpServer
 		QHttpServer *m_httpServer;
 		QMap<QString,QString> m_resourcesDir;
 		QMap<uint,VirtualJoystick*> m_virtualJoysticks;
+		KeyStrokeGenerator keyStrokeGenerator;
 };
 
 

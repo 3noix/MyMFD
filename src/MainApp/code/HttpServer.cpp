@@ -79,8 +79,8 @@ bool HttpServer::listen()
 	});
 	
 	// routing for inputs
-	m_httpServer->route("/key/<arg>/<arg>", [this] (uint key, uint bDown) {
-		return this->processKey(key,bDown!=0);
+	m_httpServer->route("/key/<arg>/<arg>", [this] (const QString &keyStr, uint bDown) {
+		return this->processKey(keyStr,bDown!=0);
 	});
 	m_httpServer->route("/button/<arg>/<arg>/<arg>", [this] (uint vj, uint button, uint bPressed) {
 		return this->processButton(vj,button,bPressed!=0);
@@ -169,36 +169,12 @@ QHttpServerResponse HttpServer::processFile(const QString &name, const QString &
 }
 
 // PROCESS KEY ////////////////////////////////////////////////////////////////
-QHttpServerResponse HttpServer::processKey(uint key, bool bDown)
+QHttpServerResponse HttpServer::processKey(const QString &keyStr, bool bDown)
 {
-	Q_UNUSED(key)
-	Q_UNUSED(bDown)
-	return QHttpServerResponse{StatusCode::BadRequest};
+	if (!keyStrokeGenerator.generateKeyStroke(keyStr,bDown))
+		return QHttpServerResponse{"text/plain","Incorrect key name",StatusCode::PreconditionFailed};
 	
-	
-	/*
-	#include <windows.h>
-	
-	INPUT ip;
-	ip.type = INPUT_KEYBOARD;
-	ip.ki.wVk = 0;
-	ip.ki.time = 0;
-	ip.ki.dwExtraInfo = 0;
-	
-	if (e.vkev.bPress)
-	{
-		// a press event
-		ip.ki.wScan = MapVirtualKey(e.vkev.key,MAPVK_VK_TO_VSC);
-		ip.ki.dwFlags = KEYEVENTF_SCANCODE;
-	}
-	else
-	{
-		// a release event
-		ip.ki.wScan = MapVirtualKey(e.vkev.key,MAPVK_VK_TO_VSC);
-		ip.ki.dwFlags = KEYEVENTF_SCANCODE | KEYEVENTF_KEYUP;
-	}
-	SendInput(1, &ip, sizeof(INPUT));
-	*/
+	return QHttpServerResponse(StatusCode::NoContent);
 }
 
 // PROCESS BUTTON /////////////////////////////////////////////////////////////
