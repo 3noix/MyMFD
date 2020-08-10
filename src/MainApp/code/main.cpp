@@ -23,14 +23,22 @@ int main(int argc, char *argv[])
 	QString errorMessage;
 	
 	// register resources dirs
-	for (const RemoteRegisteringData &data : getRemoteData(args))
+	std::vector<RemoteRegisteringData> remoteDirs = getRemoteData(args);
+	if (remoteDirs.size() == 0)
+	{
+		std::cout << "No remote dir specified" << std::endl;
+		std::cout << "Press a key to quit" << std::endl;
+		std::cin.get();
+		return 1;
+	}
+	for (const RemoteRegisteringData &data : remoteDirs)
 	{
 		if (!httpServer.registerRemoteController(data.name,data.dirPath,errorMessage))
 		{
 			std::cout << "Failed to register remote" << qPrintable(data.name) << ": " << qPrintable(errorMessage) << std::endl;
 			std::cout << "Press a key to quit" << std::endl;
 			std::cin.get();
-			return 1;
+			return 2;
 		}
 		
 		QString message = "Remote \"" + data.name + "\" accessible at \"" + httpServer.url(data.name) + "\"";
@@ -45,7 +53,7 @@ int main(int argc, char *argv[])
 			std::cout << "Failed to acquire virtual joystick #" << index << ": " << qPrintable(errorMessage) << std::endl;
 			std::cout << "Press a key to quit" << std::endl;
 			std::cin.get();
-			return 2;
+			return 3;
 		}
 		std::cout << "Virtual joystick #" << index << " acquired" << std::endl;
 	}
@@ -56,6 +64,7 @@ int main(int argc, char *argv[])
 }
 
 
+// GET REMOTE DATA ////////////////////////////////////////////////////////////
 std::vector<RemoteRegisteringData> getRemoteData(const QStringList &args)
 {
 	std::vector<RemoteRegisteringData> data;
@@ -75,6 +84,7 @@ std::vector<RemoteRegisteringData> getRemoteData(const QStringList &args)
 }
 
 
+// GET VJOY INDEXES ///////////////////////////////////////////////////////////
 std::vector<uint> getVjoyIndexes(const QStringList &args)
 {
 	std::vector<uint> indexes;
