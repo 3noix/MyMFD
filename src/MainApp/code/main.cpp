@@ -1,4 +1,5 @@
 #include <QCoreApplication>
+#include <QFileInfo>
 #include <iostream>
 #include "HttpServer.h"
 
@@ -8,11 +9,13 @@ struct RemoteRegisteringData
 	QString dirPath;
 };
 
+std::vector<RemoteRegisteringData> getRemoteData(const QStringList &args);
+std::vector<uint> getVjoyIndexes(const QStringList &args);
+
 
 int main(int argc, char *argv[])
 {
 	QCoreApplication app{argc,argv};
-	QString appDir = QCoreApplication::applicationDirPath();
 	QStringList args = app.arguments();
 	args.removeFirst();
 	
@@ -20,8 +23,7 @@ int main(int argc, char *argv[])
 	QString errorMessage;
 	
 	// register resources dirs
-	std::vector<RemoteRegisteringData> resourcesData{{"test1",appDir+"/../examples/test"}}; // TO BE COMPUTED FROM ARGUMENTS
-	for (const RemoteRegisteringData &data : resourcesData)
+	for (const RemoteRegisteringData &data : getRemoteData(args))
 	{
 		if (!httpServer.registerRemoteController(data.name,data.dirPath,errorMessage))
 		{
@@ -36,8 +38,7 @@ int main(int argc, char *argv[])
 	}
 	
 	// acquire virtual joysticks if needed
-	std::vector<uint> vjIndexes{1,2,3}; // TO BE COMPUTED FROM ARGUMENTS
-	for (int index : vjIndexes)
+	for (int index : getVjoyIndexes(args))
 	{
 		if (!httpServer.registerVirtualJoystick(index,errorMessage))
 		{
@@ -52,5 +53,48 @@ int main(int argc, char *argv[])
 	httpServer.listen();
 	std::cout << "Press Ctrl+C to terminate" << std::endl;
 	return app.exec();
+}
+
+
+std::vector<RemoteRegisteringData> getRemoteData(const QStringList &args)
+{
+	std::vector<RemoteRegisteringData> data;
+	
+	for (const QString &arg : args)
+	{
+		if (arg.startsWith("-remote=(") && arg.endsWith(")") && arg.count('(') == 1 && arg.count(',') == 1 && arg.count(')') == 1)
+		{
+			QStringList temp = arg.mid(9,arg.size()-10).split(',',Qt::KeepEmptyParts);
+			if (temp.size() != 2) {continue;}
+			RemoteRegisteringData rrd{temp[0],QFileInfo{temp[1]}.absoluteFilePath()};
+			data.push_back(rrd);
+		}
+	}
+	
+	return data;
+}
+
+
+std::vector<uint> getVjoyIndexes(const QStringList &args)
+{
+	std::vector<uint> indexes;
+	
+	for (const QString &arg : args)
+	{
+		if (arg.startsWith("-vjoy=") && arg.size() > 6)
+		{
+			for (const QString &temp : arg.mid(6).split('+',Qt::SkipEmptyParts))
+			{
+				bool bok = true;
+				uint index = temp.toUInt(&bok);
+				if (bok) {indexes.push_back(index);}
+			}
+		}
+	}
+	
+	std::sort(indexes.begin(),indexes.end());
+	auto newEnd = std::unique(indexes.begin(),indexes.end());
+	indexes.erase(newEnd,indexes.end());
+	return indexes;
 }
 
