@@ -19,14 +19,10 @@ win32-g++:LIBS += ../../3rdparty/vJoy218SDK-291116/SDK/lib/vJoyInterface.lib
 win32-msvc*:LIBS += ../../3rdparty/vJoy218SDK-291116/SDK/lib/amd64/vJoyInterface.lib
 
 
-HEADERS +=  CODE/VirtualJoystick.h
-
-
 SOURCES +=  CODE/main.cpp \
 			CODE/VirtualJoystick.cpp \
-			CODE/RemoteController.cpp \
-			CODE/UjpsHttpServer.cpp \
-			CODE/VirtualEventsQueue.cpp
+			CODE/VirtualJoystickPrivate.cpp \
+			CODE/HttpServer.cpp
 
 
 RC_FILE += icone.rc

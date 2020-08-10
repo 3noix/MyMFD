@@ -1,0 +1,36 @@
+* {
+    touch-action: manipulation;
+    /* touch-action: none; */
+}
+
+.body {
+	background-color: white;
+	width: 667px;
+	/* height: 375px; */
+	height: 324px; /* if we substract Safari toolbar height */
+	border: solid 1px black;
+}
+
+.col {
+	margin-left: 30px;
+}
+
+.btn.btn-outline-primary {
+	margin: 5px;
+	border-radius: 10px;
+	width: 50px;
+	height: 50px;
+	text-align: center;
+	vertical-align: middle;
+	display: table-cell;
+}
+
+.btn.btn-outline-primary:hover {
+	background-color: white;
+	color:#007bff;
+}
+
+.btn.btn-outline-primary:active {
+	background-color:#007bff;
+	color: white;
+}
