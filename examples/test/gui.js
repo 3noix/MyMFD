@@ -66,18 +66,15 @@ msgDisplay.innerHTML = pf;
 ///////////////////////////////////////////////////////////////////////////////
 let sendKeyMouse = (keyStr,down) => {
 	if (!useMouseEvents) return;
-	let url = "http://" + target + "/key/" + keyStr + "/" + (down ? "1" : "0");
-	let reqhttp = new XMLHttpRequest();
-	reqhttp.onerror = function() {
-		iError++;
-		msgDisplay.innerHTML = "An error occured (#" + iError + ")";
-	};
-	reqhttp.open("GET",url,true);
-	reqhttp.send();
+	sendKey(keyStr,down);
 };
 
 let sendKeyTouch = (keyStr,down) => {
 	if (!useTouchEvents) return;
+	sendKey(keyStr,down);
+};
+
+let sendKey = (keyStr,down) => {
 	let url = "http://" + target + "/key/" + keyStr + "/" + (down ? "1" : "0");
 	let reqhttp = new XMLHttpRequest();
 	reqhttp.onerror = function() {
@@ -86,22 +83,19 @@ let sendKeyTouch = (keyStr,down) => {
 	};
 	reqhttp.open("GET",url,true);
 	reqhttp.send();
-};
+}
 
 let sendButtonMouse = (vji,button,pressed) => {
 	if (!useMouseEvents) return;
-	let url = "http://" + target + "/button/" + vji + "/" + button + "/" + (pressed ? "1" : "0");
-	let reqhttp = new XMLHttpRequest();
-	reqhttp.onerror = function() {
-		iError++;
-		msgDisplay.innerHTML = "An error occured (#" + iError + ")";
-	};
-	reqhttp.open("GET",url,true);
-	reqhttp.send();
+	sendButton(vji,button,pressed);
 };
 
 let sendButtonTouch = (vji,button,pressed) => {
 	if (!useTouchEvents) return;
+	sendButton(vji,button,pressed);
+};
+
+let sendButton = (vji,button,pressed) => {
 	let url = "http://" + target + "/button/" + vji + "/" + button + "/" + (pressed ? "1" : "0");
 	let reqhttp = new XMLHttpRequest();
 	reqhttp.onerror = function() {
@@ -110,7 +104,7 @@ let sendButtonTouch = (vji,button,pressed) => {
 	};
 	reqhttp.open("GET",url,true);
 	reqhttp.send();
-};
+}
 
 let sendAxis = (vji,axis,value) => {
 	let url = "http://" + target + "/axis/" + vji + "/" + axis + "/" + value;
@@ -177,7 +171,7 @@ let sendPov = (vji,pov,value) => {
 			}
 		}
 	}
-
+	
 	let axes = document.querySelectorAll("input[type=range]");
 	for (let axis of axes) {
 		if (axis.hasAttribute("data-type") && axis.hasAttribute("data-vjoy") && axis.hasAttribute("data-number")) {
