@@ -1,4 +1,5 @@
 #include "KeyStrokeGenerator.h"
+#include <QStringList>
 #include <windows.h>
 
 
@@ -81,42 +82,90 @@ KeyStrokeGenerator::KeyStrokeGenerator()
 }
 
 // KEYSTR 2 KEYCODE ///////////////////////////////////////////////////////////
-uint KeyStrokeGenerator::keystr2keycode(const QString &keyStr)
+KeyStrokeData KeyStrokeGenerator::keystr2keydata(const QString &keyStr)
 {
+	int nbPlus = keyStr.count('+');
+	if (nbPlus > 1) {return {0,0};} // one modifier only!!
+	
+	if (nbPlus == 1)
+	{
+		// with a modifier
+		QStringList list = keyStr.split('+',Qt::KeepEmptyParts);
+		auto result1 = m_keystr2keycode_data.find(list[0]);
+		auto result2 = m_keystr2keycode_data.find(list[1]);
+		if (result1 == m_keystr2keycode_data.end()) {return {0,0};}
+		if (result2 == m_keystr2keycode_data.end()) {return {0,0};}
+		return {result1->second,result2->second};
+	}
+	
+	// no modifier
 	auto result = m_keystr2keycode_data.find(keyStr);
-	if (result == m_keystr2keycode_data.end()) {return 0;}
-	return result->second;
+	if (result == m_keystr2keycode_data.end()) {return {0,0};}
+	return {result->second,0};
 }
 
 // GENERATE KEY STROKE ////////////////////////////////////////////////////////
 bool KeyStrokeGenerator::generateKeyStroke(const QString &keyStr, bool bDown)
 {
-	uint key = this->keystr2keycode(keyStr);
-	if (key == 0) {return false;}
-	return this->generateKeyStroke(key,bDown);
+	KeyStrokeData data = this->keystr2keydata(keyStr);
+	if (data.key == 0) {return false;}
+	this->generateKeyStroke(data.key,data.modifier,bDown);
+	return true;
 }
 
-bool KeyStrokeGenerator::generateKeyStroke(uint keycode, bool bDown)
+void KeyStrokeGenerator::generateKeyStroke(uint keycode, uint modifier, bool bDown)
 {
-	INPUT ip;
-	ip.type = INPUT_KEYBOARD;
-	ip.ki.wVk = 0;
-	ip.ki.time = 0;
-	ip.ki.dwExtraInfo = 0;
-	
-	if (bDown)
+	if (modifier > 0)
 	{
-		// a press event
-		ip.ki.wScan = MapVirtualKey(keycode,MAPVK_VK_TO_VSC);
-		ip.ki.dwFlags = KEYEVENTF_SCANCODE;
+		INPUT ips[2];
+		ips[0].type = INPUT_KEYBOARD;
+		ips[1].type = INPUT_KEYBOARD;
+		ips[0].ki.wVk = 0;
+		ips[1].ki.wVk = 0;
+		ips[0].ki.time = 0;
+		ips[1].ki.time = 0;
+		ips[0].ki.dwExtraInfo = 0;
+		ips[1].ki.dwExtraInfo = 0;
+		
+		if (bDown)
+		{
+			// a press event
+			ips[0].ki.wScan = MapVirtualKey(modifier,MAPVK_VK_TO_VSC);
+			ips[1].ki.wScan = MapVirtualKey(keycode,MAPVK_VK_TO_VSC);
+			ips[0].ki.dwFlags = KEYEVENTF_SCANCODE;
+			ips[1].ki.dwFlags = KEYEVENTF_SCANCODE;
+		}
+		else
+		{
+			// a release event
+			ips[0].ki.wScan = MapVirtualKey(keycode,MAPVK_VK_TO_VSC);
+			ips[1].ki.wScan = MapVirtualKey(modifier,MAPVK_VK_TO_VSC);
+			ips[0].ki.dwFlags = KEYEVENTF_SCANCODE | KEYEVENTF_KEYUP;
+			ips[1].ki.dwFlags = KEYEVENTF_SCANCODE | KEYEVENTF_KEYUP;
+		}
+		SendInput(2, ips, sizeof(INPUT));
 	}
 	else
 	{
-		// a release event
-		ip.ki.wScan = MapVirtualKey(keycode,MAPVK_VK_TO_VSC);
-		ip.ki.dwFlags = KEYEVENTF_SCANCODE | KEYEVENTF_KEYUP;
+		INPUT ip;
+		ip.type = INPUT_KEYBOARD;
+		ip.ki.wVk = 0;
+		ip.ki.time = 0;
+		ip.ki.dwExtraInfo = 0;
+
+		if (bDown)
+		{
+			// a press event
+			ip.ki.wScan = MapVirtualKey(keycode,MAPVK_VK_TO_VSC);
+			ip.ki.dwFlags = KEYEVENTF_SCANCODE;
+		}
+		else
+		{
+			// a release event
+			ip.ki.wScan = MapVirtualKey(keycode,MAPVK_VK_TO_VSC);
+			ip.ki.dwFlags = KEYEVENTF_SCANCODE | KEYEVENTF_KEYUP;
+		}
+		SendInput(1, &ip, sizeof(INPUT));
 	}
-	SendInput(1, &ip, sizeof(INPUT));
-	return true;
 }
 
