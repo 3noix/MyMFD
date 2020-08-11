@@ -83,8 +83,9 @@ KeyStrokeGenerator::KeyStrokeGenerator()
 // KEYSTR 2 KEYCODE ///////////////////////////////////////////////////////////
 uint KeyStrokeGenerator::keystr2keycode(const QString &keyStr)
 {
-	if (!m_keystr2keycode_data.contains(keyStr)) {return 0;}
-	return m_keystr2keycode_data[keyStr];
+	auto result = m_keystr2keycode_data.find(keyStr);
+	if (result == m_keystr2keycode_data.end()) {return 0;}
+	return result->second;
 }
 
 // GENERATE KEY STROKE ////////////////////////////////////////////////////////

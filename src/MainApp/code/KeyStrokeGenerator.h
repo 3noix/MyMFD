@@ -2,7 +2,7 @@
 #define KEY_STROKE_GENERATOR
 
 
-#include <QMap>
+#include <map>
 #include <QString>
 using uint = unsigned int;
 
@@ -28,7 +28,7 @@ class KeyStrokeGenerator
 	private:
 		uint keystr2keycode(const QString &keyStr);
 		
-		QMap<QString,uint> m_keystr2keycode_data;
+		std::map<QString,uint> m_keystr2keycode_data;
 };
 
 

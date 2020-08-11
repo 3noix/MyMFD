@@ -6,6 +6,7 @@
 //  CONSTRUCTEUR
 //  DESTRUCTEUR
 //
+//  ID
 //  IS VJOY DEVICE FREE
 //  FLUSH
 //  RESET REPORT
@@ -20,16 +21,14 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-VirtualJoystick::VirtualJoystick(uint id, uint nbButtons, uint nbAxes, uint nbPovs, bool bForcedInit)
+VirtualJoystick::VirtualJoystick(uint id, uint nbButtons, uint nbAxes, uint nbPovs, bool bForcedInit):
+	pimpl{std::make_unique<VirtualJoystickPrivate>(id,nbButtons,nbAxes,nbPovs,bForcedInit)}
 {
-	pimpl = new VirtualJoystickPrivate{id,nbButtons,nbAxes,nbPovs,bForcedInit};
 }
 
-VirtualJoystick::~VirtualJoystick()
-{
-	delete pimpl;
-}
+VirtualJoystick::~VirtualJoystick() = default;
 
+uint VirtualJoystick::id() const {return pimpl->id();}
 bool VirtualJoystick::isVJoyDeviceFree(uint numDevice) {return pimpl->isVJoyDeviceFree(numDevice);}
 bool VirtualJoystick::flush(bool bEvenIfNoChange) {return pimpl->flush(bEvenIfNoChange);}
 void VirtualJoystick::resetReport() {pimpl->resetReport();}

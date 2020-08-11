@@ -34,7 +34,6 @@ HttpServer::HttpServer()
 HttpServer::~HttpServer()
 {
 	this->closeServer();
-	qDeleteAll(m_virtualJoysticks);
 }
 
 // ETHERNET LOCAL IP ADDRESS //////////////////////////////////////////////////
@@ -119,8 +118,7 @@ bool HttpServer::registerVirtualJoystick(uint id, QString &errorMessage)
 {
 	try
 	{
-		VirtualJoystick *vj = new VirtualJoystick{id}; // might throw
-		m_virtualJoysticks.insert(id,vj);
+		m_virtualJoysticks.push_back(std::make_unique<VirtualJoystick>(id)); // might throw
 		errorMessage = "";
 		return true;
 	}
@@ -178,41 +176,50 @@ QHttpServerResponse HttpServer::processKey(const QString &keyStr, bool bDown)
 }
 
 // PROCESS BUTTON /////////////////////////////////////////////////////////////
-QHttpServerResponse HttpServer::processButton(uint vj, uint button, bool bPressed)
+QHttpServerResponse HttpServer::processButton(uint vji, uint button, bool bPressed)
 {
-	if (!m_virtualJoysticks.contains(vj))
+	auto f = [vji] (const std::unique_ptr<VirtualJoystick> &up) {return up->id() == vji;};
+	auto result = std::find_if(m_virtualJoysticks.begin(),m_virtualJoysticks.end(),f);
+	if (result == m_virtualJoysticks.end())
 		return QHttpServerResponse{"text/plain","Virtual joystick not acquired",StatusCode::PreconditionFailed};
 	
-	if (!m_virtualJoysticks[vj]->setButton(button,bPressed))
+	VirtualJoystick *vj = result->get();
+	if (!vj->setButton(button,bPressed))
 		return QHttpServerResponse{"text/plain","Button number is too big",StatusCode::Forbidden};
 	
-	m_virtualJoysticks[vj]->flush();
+	vj->flush();
 	return QHttpServerResponse(StatusCode::NoContent);
 }
 
 // PROCESS AXIS ///////////////////////////////////////////////////////////////
-QHttpServerResponse HttpServer::processAxis(uint vj, uint axis, float value)
+QHttpServerResponse HttpServer::processAxis(uint vji, uint axis, float value)
 {
-	if (!m_virtualJoysticks.contains(vj))
+	auto f = [vji] (const std::unique_ptr<VirtualJoystick> &up) {return up->id() == vji;};
+	auto result = std::find_if(m_virtualJoysticks.begin(),m_virtualJoysticks.end(),f);
+	if (result == m_virtualJoysticks.end())
 		return QHttpServerResponse{"text/plain","Virtual joystick not acquired",StatusCode::PreconditionFailed};
 	
-	if (!m_virtualJoysticks[vj]->setAxis(axis,value))
+	VirtualJoystick *vj = result->get();
+	if (!vj->setAxis(axis,value))
 		return QHttpServerResponse{"text/plain","Axis number is too big",StatusCode::Forbidden};
 	
-	m_virtualJoysticks[vj]->flush();
+	vj->flush();
 	return QHttpServerResponse(StatusCode::NoContent);
 }
 
 // PROCESS POV ////////////////////////////////////////////////////////////////
-QHttpServerResponse HttpServer::processPov(uint vj, uint pov, float value)
+QHttpServerResponse HttpServer::processPov(uint vji, uint pov, float value)
 {
-	if (!m_virtualJoysticks.contains(vj))
+	auto f = [vji] (const std::unique_ptr<VirtualJoystick> &up) {return up->id() == vji;};
+	auto result = std::find_if(m_virtualJoysticks.begin(),m_virtualJoysticks.end(),f);
+	if (result == m_virtualJoysticks.end())
 		return QHttpServerResponse{"text/plain","Virtual joystick not acquired",StatusCode::PreconditionFailed};
 	
-	if (!m_virtualJoysticks[vj]->setPov(pov,value))
+	VirtualJoystick *vj = result->get();
+	if (!vj->setPov(pov,value))
 		return QHttpServerResponse{"text/plain","Pov number is too big",StatusCode::Forbidden};
 	
-	m_virtualJoysticks[vj]->flush();
+	vj->flush();
 	return QHttpServerResponse(StatusCode::NoContent);
 }
 

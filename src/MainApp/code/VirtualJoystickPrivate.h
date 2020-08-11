@@ -17,6 +17,11 @@ class VirtualJoystickPrivate
 		VirtualJoystickPrivate& operator=(VirtualJoystickPrivate &&other) = delete;
 		~VirtualJoystickPrivate();
 		
+		uint id() const;
+		void resetReport();
+		bool flush(bool bEvenIfNoChange = false);
+		bool isVJoyDeviceFree(uint numDevice);
+
 		bool setButton(uint button, bool bPressed);
 		bool toggleButton(uint button);
 		bool getButton(uint button) const;
@@ -26,10 +31,6 @@ class VirtualJoystickPrivate
 		
 		bool setPov(uint pov, float value);
 		float getPov(uint pov) const;
-		
-		void resetReport();
-		bool flush(bool bEvenIfNoChange = false);
-		bool isVJoyDeviceFree(uint numDevice);
 		
 		
 	private:

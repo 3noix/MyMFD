@@ -22,6 +22,7 @@ LONG bitLong(uint i)
 //  CONSTRUCTEUR
 //  DESTRUCTEUR
 //
+//  ID
 //  IS VJOY DEVICE FREE
 //  FLUSH
 //  RESET REPORT
@@ -78,6 +79,12 @@ VirtualJoystickPrivate::~VirtualJoystickPrivate()
 
 
 
+
+// ID /////////////////////////////////////////////////////////////////////////
+uint VirtualJoystickPrivate::id() const
+{
+	return m_id;
+}
 
 // IS VJOY DEVICE FREE ////////////////////////////////////////////////////////
 bool VirtualJoystickPrivate::isVJoyDeviceFree(uint numDevice)

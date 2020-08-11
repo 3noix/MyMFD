@@ -2,6 +2,7 @@
 #define VIRTUAL_JOYSTICK
 
 
+#include <memory>
 class VirtualJoystickPrivate;
 using uint = unsigned int;
 
@@ -16,6 +17,11 @@ class VirtualJoystick
 		VirtualJoystick& operator=(VirtualJoystick &&other) = delete;
 		~VirtualJoystick();
 		
+		uint id() const;
+		void resetReport();
+		bool flush(bool bEvenIfNoChange = false);
+		bool isVJoyDeviceFree(uint numDevice);
+
 		bool setButton(uint button, bool bPressed);
 		bool toggleButton(uint button);
 		bool getButton(uint button) const;
@@ -26,13 +32,9 @@ class VirtualJoystick
 		bool setPov(uint pov, float value);
 		float getPov(uint pov) const;
 		
-		void resetReport();
-		bool flush(bool bEvenIfNoChange = false);
-		bool isVJoyDeviceFree(uint numDevice);
-		
 		
 	private:
-		VirtualJoystickPrivate *pimpl;
+		std::unique_ptr<VirtualJoystickPrivate> pimpl;
 };
 
 #endif
