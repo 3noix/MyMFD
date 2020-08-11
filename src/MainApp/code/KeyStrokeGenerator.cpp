@@ -130,16 +130,16 @@ void KeyStrokeGenerator::generateKeyStroke(uint keycode, uint modifier, bool bDo
 		if (bDown)
 		{
 			// a press event
-			ips[0].ki.wScan = MapVirtualKey(modifier,MAPVK_VK_TO_VSC);
-			ips[1].ki.wScan = MapVirtualKey(keycode,MAPVK_VK_TO_VSC);
+			ips[0].ki.wScan = MapVirtualKey(keycode,MAPVK_VK_TO_VSC);
+			ips[1].ki.wScan = MapVirtualKey(modifier,MAPVK_VK_TO_VSC);
 			ips[0].ki.dwFlags = KEYEVENTF_SCANCODE;
 			ips[1].ki.dwFlags = KEYEVENTF_SCANCODE;
 		}
 		else
 		{
 			// a release event
-			ips[0].ki.wScan = MapVirtualKey(keycode,MAPVK_VK_TO_VSC);
-			ips[1].ki.wScan = MapVirtualKey(modifier,MAPVK_VK_TO_VSC);
+			ips[0].ki.wScan = MapVirtualKey(modifier,MAPVK_VK_TO_VSC);
+			ips[1].ki.wScan = MapVirtualKey(keycode,MAPVK_VK_TO_VSC);
 			ips[0].ki.dwFlags = KEYEVENTF_SCANCODE | KEYEVENTF_KEYUP;
 			ips[1].ki.dwFlags = KEYEVENTF_SCANCODE | KEYEVENTF_KEYUP;
 		}
