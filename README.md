@@ -12,7 +12,7 @@ You can download vJoy here: http://vjoystick.sourceforge.net/site/index.php/down
 
 ## Build the project
 
-Building the project is not needed to use it: the simpler way is to use the provided binary release. If you really want to build it, you will need to:
+Building the project is not needed to use it: the simpler way is to use the last provided binary release. If you really want to build it, you will need to:
 - install Qt 5.15: https://www.qt.io/download (and no previous version because QtHttpServer needs at least this version)
 - build QtHttpServer:
     - download the source here: https://github.com/qt-labs/qthttpserver
@@ -22,7 +22,7 @@ Building the project is not needed to use it: the simpler way is to use the prov
 
 ## Use the PC app
 
-The PC app is very basic, it is just a console app. To provide to the app the path to your GUI files (and the indexes of the vJoy devices to use), you have to use the arguments of the app. The easier to do it is to use a bat file. Take a look at the verbosely commented example bat file below (the lines starting with "REM" are comments):
+The PC app is very basic, it is just a console app. To provide to the app the path to your GUI files (and the indexes of the vJoy devices to use), you have to use the arguments of the app. The easier way to do is to use a bat file. Take a look at the verbosely commented example bat file below (the lines starting with "REM" are comments):
 
 
 ```Bat
@@ -85,12 +85,12 @@ To generate a vJoy axis event from a html range, use **data-type="axis"**, speci
 
 ### Second way: HTML, CSS and more Javascript
 
-If you feel to limited with the first way, you can drop the use of the "data-" attributes and use directly the Javascript functions "sendKey", "sendButton", "sendAxis" and "sendPov" (or their touch/mouse version) with the events of any html widget you want.
+If you feel too limited with the first way, you can drop the use of the "data-" attributes and use directly the Javascript functions "sendKey", "sendButton", "sendAxis" and "sendPov" (or their touch/mouse version) with the events of any html widget you want.
 
 
 ### Third way: Using HTTP requests
 
-If you don't event want to use web files, you can use any tech you want and just send http requests:
+If you don't even want to use web files, you can use any tech you want and just send http requests:
 ```Html
 <!-- xxx.xxx.xxx.xxx is the IP address of the PC -->
 <!-- requests relative to keys -->

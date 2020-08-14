@@ -84,7 +84,7 @@ let sendPov = (vji,pov,value) => {
 		if (button.hasAttribute("data-vjoy") && button.hasAttribute("data-number")) {
 			let vji = parseInt(button.getAttribute("data-vjoy"));
 			let number = parseInt(button.getAttribute("data-number")) - 1;
-			if (!isNaN(number)) {
+			if (!isNaN(vji) && !isNaN(number)) {
 				button.addEventListener("mousedown", function() {
 					sendButtonMouse(vji,number,true);
 				});
@@ -107,7 +107,7 @@ let sendPov = (vji,pov,value) => {
 			let dataType = axis.getAttribute("data-type");
 			let vji = parseInt(axis.getAttribute("data-vjoy"));
 			let number = parseInt(axis.getAttribute("data-number")) - 1;
-			if (dataType == "axis" && !isNaN(number)) {
+			if (dataType == "axis" && !isNaN(vji) && !isNaN(number)) {
 				axis.addEventListener("input", function() {
 					let f = 0.001 * axis.value - 1.0;
 					sendAxis(vji,number,f);
