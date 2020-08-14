@@ -1,9 +1,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 // INIT AND CONSTANTS /////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-let target = "192.168.1.40:8080"; // to provide from an input inside html?
 let msgDisplay = document.getElementById("msgDisplay");
-let name = document.getElementById("name").innerHTML;
+//let name = document.getElementById("name").innerHTML;
 let iError = 0;
 
 
@@ -19,30 +18,29 @@ msgDisplay.innerHTML = pf;
 ///////////////////////////////////////////////////////////////////////////////
 // TESTS //////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-{
-	document.fullscreenEnabled = true;
-	let body = document.getElementById("body");
-	
-	body.onfullscreenerror = function() {
-		msgDisplay.innerHTML = "full screen error";
-	}
-	
-	window.onorientationchange = function(event) {
-		//msgDisplay.innerHTML = "Orientation is now " + event.target.screen.orientation.angle;
-		msgDisplay.innerHTML = "orientation changed";
-	}
-	
-	let requestFullScreen = () => {
-		body.requestFullscreen();
-		msgDisplay.innerHTML = "full screen request";
-	};
-}
+document.fullscreenEnabled = true;
+let body = document.getElementById("body");
+
+body.onfullscreenerror = function() {
+	msgDisplay.innerHTML = "full screen error";
+};
+
+window.onorientationchange = function(event) {
+	//msgDisplay.innerHTML = "Orientation is now " + event.target.screen.orientation.angle;
+	msgDisplay.innerHTML = "orientation changed";
+};
+
+let requestFullScreen = () => {
+	body.requestFullscreen();
+	msgDisplay.innerHTML = "full screen request";
+};
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // SLIDERS LABELS /////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 {
+	// slider 1
 	let slider1 = document.getElementById("slider1");
 	let slabel1 = document.getElementById("slabel1");
 	slabel1.innerHTML = 0;
@@ -51,6 +49,7 @@ msgDisplay.innerHTML = pf;
 		slabel1.innerHTML = f.toString().substring(0,f<0?6:5);
 	};
 	
+	// slider 2
 	let slider2 = document.getElementById("slider2");
 	let slabel2 = document.getElementById("slabel2");
 	slabel2.innerHTML = 0;
@@ -75,7 +74,7 @@ let sendKeyTouch = (keyStr,down) => {
 };
 
 let sendKey = (keyStr,down) => {
-	let url = "http://" + target + "/key/" + keyStr + "/" + (down ? "1" : "0");
+	let url = window.location.origin + "/key/" + keyStr + "/" + (down ? "1" : "0");
 	let reqhttp = new XMLHttpRequest();
 	reqhttp.onerror = function() {
 		iError++;
@@ -83,7 +82,7 @@ let sendKey = (keyStr,down) => {
 	};
 	reqhttp.open("GET",url,true);
 	reqhttp.send();
-}
+};
 
 let sendButtonMouse = (vji,button,pressed) => {
 	if (!useMouseEvents) return;
@@ -96,7 +95,7 @@ let sendButtonTouch = (vji,button,pressed) => {
 };
 
 let sendButton = (vji,button,pressed) => {
-	let url = "http://" + target + "/button/" + vji + "/" + button + "/" + (pressed ? "1" : "0");
+	let url = window.location.origin + "/button/" + vji + "/" + button + "/" + (pressed ? "1" : "0");
 	let reqhttp = new XMLHttpRequest();
 	reqhttp.onerror = function() {
 		iError++;
@@ -104,10 +103,10 @@ let sendButton = (vji,button,pressed) => {
 	};
 	reqhttp.open("GET",url,true);
 	reqhttp.send();
-}
+};
 
 let sendAxis = (vji,axis,value) => {
-	let url = "http://" + target + "/axis/" + vji + "/" + axis + "/" + value;
+	let url = window.location.origin + "/axis/" + vji + "/" + axis + "/" + value;
 	let reqhttp = new XMLHttpRequest();
 	reqhttp.onerror = function() {
 		iError++;
@@ -118,7 +117,7 @@ let sendAxis = (vji,axis,value) => {
 };
 
 let sendPov = (vji,pov,value) => {
-	let url = "http://" + target + "/pov/" + vji + "/" + pov + "/" + value;
+	let url = window.location.origin + "/pov/" + vji + "/" + pov + "/" + value;
 	let reqhttp = new XMLHttpRequest();
 	reqhttp.onerror = function() {
 		iError++;
