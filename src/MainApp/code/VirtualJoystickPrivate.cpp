@@ -38,9 +38,9 @@ LONG bitLong(uint i)
 
 
 // CONSTRUCTEUR ///////////////////////////////////////////////////////////////
-VirtualJoystickPrivate::VirtualJoystickPrivate(uint id, uint nbButtons, uint nbAxes, uint nbPovs, bool bForcedInit)
+VirtualJoystickPrivate::VirtualJoystickPrivate(uint id, bool bForcedInit)
 {
-	if (id > NB_JOYSTICKS_MAX || nbButtons > 128 || nbAxes > 8 || nbPovs > 4)
+	if (id > NB_JOYSTICKS_MAX)
 		throw ExceptionBadVirtualJoystickArgs{};
 	
 	m_id = id;

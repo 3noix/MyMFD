@@ -21,8 +21,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-VirtualJoystick::VirtualJoystick(uint id, uint nbButtons, uint nbAxes, uint nbPovs, bool bForcedInit):
-	pimpl{std::make_unique<VirtualJoystickPrivate>(id,nbButtons,nbAxes,nbPovs,bForcedInit)}
+VirtualJoystick::VirtualJoystick(uint id, bool bForcedInit):
+	pimpl{std::make_unique<VirtualJoystickPrivate>(id,bForcedInit)}
 {
 }
 

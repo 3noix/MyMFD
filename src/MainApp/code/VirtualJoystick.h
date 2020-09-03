@@ -10,7 +10,7 @@ using uint = unsigned int;
 class VirtualJoystick
 {
 	public:
-		VirtualJoystick(uint id, uint nbButtons = 128, uint nbAxes = 8, uint nbPovs = 0, bool bForcedInit = true);
+		VirtualJoystick(uint id, bool bForcedInit = true);
 		VirtualJoystick(const VirtualJoystick &other) = delete;
 		VirtualJoystick(VirtualJoystick &&other) = delete;
 		VirtualJoystick& operator=(const VirtualJoystick &other) = delete;
