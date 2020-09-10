@@ -2,7 +2,6 @@
 // INIT AND CONSTANTS /////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 let msgDisplay = document.getElementById("msgDisplay");
-//let name = document.getElementById("name").innerHTML;
 let iError = 0;
 
 
@@ -129,64 +128,58 @@ let sendPov = (vji,pov,value) => {
 
 // initialisation
 {
-	let keys = document.querySelectorAll("button[data-type=key]");
+	let keys = document.querySelectorAll("button[data-type=key][data-key]");
 	for (let key of keys) {
-		if (key.hasAttribute("data-key")){
-			let keyStr = key.getAttribute("data-key");
-			
-			key.addEventListener("mousedown", function() {
-				sendKeyMouse(keyStr,true);
-			});
-			key.addEventListener("mouseup", function() {
-				sendKeyMouse(keyStr,false);
-			});
-			key.addEventListener("touchstart", function() {
-				sendKeyTouch(keyStr,true);
-			});
-			key.addEventListener("touchend", function() {
-				sendKeyTouch(keyStr,false);
-			});
-		}
+		let keyStr = key.getAttribute("data-key");
+		
+		key.addEventListener("mousedown", function() {
+			sendKeyMouse(keyStr,true);
+		});
+		key.addEventListener("mouseup", function() {
+			sendKeyMouse(keyStr,false);
+		});
+		key.addEventListener("touchstart", function() {
+			sendKeyTouch(keyStr,true);
+		});
+		key.addEventListener("touchend", function() {
+			sendKeyTouch(keyStr,false);
+		});
 	}
 	
-	let buttons = document.querySelectorAll("button[data-type=button]");
+	let buttons = document.querySelectorAll("button[data-type=button][data-vjoy][data-number]");
 	for (let button of buttons) {
-		if (button.hasAttribute("data-vjoy") && button.hasAttribute("data-number")) {
-			let vji = parseInt(button.getAttribute("data-vjoy"));
-			let number = parseInt(button.getAttribute("data-number")) - 1;
-			if (!isNaN(vji) && !isNaN(number)) {
-				button.addEventListener("mousedown", function() {
-					sendButtonMouse(vji,number,true);
-				});
-				button.addEventListener("mouseup", function() {
-					sendButtonMouse(vji,number,false);
-				});
-				button.addEventListener("touchstart", function() {
-					sendButtonTouch(vji,number,true);
-				});
-				button.addEventListener("touchend", function() {
-					sendButtonTouch(vji,number,false);
-				});
-			}
+		let dataVjoy = parseInt(button.getAttribute("data-vjoy"));
+		let dataNumber = parseInt(button.getAttribute("data-number")) - 1;
+		if (!isNaN(dataVjoy) && !isNaN(dataNumber)) {
+			button.addEventListener("mousedown", function() {
+				sendButtonMouse(dataVjoy,dataNumber,true);
+			});
+			button.addEventListener("mouseup", function() {
+				sendButtonMouse(dataVjoy,dataNumber,false);
+			});
+			button.addEventListener("touchstart", function() {
+				sendButtonTouch(dataVjoy,dataNumber,true);
+			});
+			button.addEventListener("touchend", function() {
+				sendButtonTouch(dataVjoy,dataNumber,false);
+			});
 		}
 	}
 	
-	let axes = document.querySelectorAll("input[type=range]");
+	let axes = document.querySelectorAll("input[type=range][data-type][data-vjoy][data-number]");
 	for (let axis of axes) {
-		if (axis.hasAttribute("data-type") && axis.hasAttribute("data-vjoy") && axis.hasAttribute("data-number")) {
-			let dataType = axis.getAttribute("data-type");
-			let vji = parseInt(axis.getAttribute("data-vjoy"));
-			let number = parseInt(axis.getAttribute("data-number")) - 1;
-			if (dataType == "axis" && !isNaN(vji) && !isNaN(number)) {
-				axis.addEventListener("input", function() {
-					let f = 0.001 * axis.value - 1.0;
-					sendAxis(vji,number,f);
-				});
-				axis.setAttribute("min",0);
-				axis.setAttribute("max",2000);
-				axis.setAttribute("value",1000);
-				sendAxis(vji,number,0);
-			}
+		let dataType = axis.getAttribute("data-type");
+		let dataVjoy = parseInt(axis.getAttribute("data-vjoy"));
+		let dataNumber = parseInt(axis.getAttribute("data-number")) - 1;
+		if (dataType == "axis" && !isNaN(dataVjoy) && !isNaN(dataNumber)) {
+			axis.addEventListener("input", function() {
+				let f = 0.001 * axis.value - 1.0;
+				sendAxis(dataVjoy,dataNumber,f);
+			});
+			axis.setAttribute("min",0);
+			axis.setAttribute("max",2000);
+			axis.setAttribute("value",1000);
+			sendAxis(dataVjoy,dataNumber,0);
 		}
 	}
 }
