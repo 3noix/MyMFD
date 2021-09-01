@@ -8,7 +8,7 @@ If not exist bin mkdir bin
 
 REM compilation and deployment of CleanQtProjects
 echo compiling CleanQtProjects
-cd src/CleanQtProjects
+cd utils/CleanQtProjects
 qmake
 mingw32-make release
 cd release
@@ -30,10 +30,10 @@ echo.
 
 REM compilation and deployment of main app
 echo compiling MainApp
-cd src/MainApp
+cd src
 qmake
 mingw32-make release
-cd ../..
+cd ..
 echo.
 echo.
 

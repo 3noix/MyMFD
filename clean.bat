@@ -1,6 +1,6 @@
 echo off
 echo Setting up environment for cleaning projects...
-set PATH=%~dp0\src\CleanQtProjects\release;%PATH%
+set PATH=%~dp0\utils\CleanQtProjects\release;%PATH%
 echo.
 echo.
 
@@ -11,18 +11,18 @@ echo.
 CleanQtProjects.exe %~dp0\3rdparty\HttpServer\src
 CleanQtProjects.exe %~dp0\3rdparty\HttpServer\test
 CleanQtProjects.exe %~dp0\3rdparty\HttpServer\mytest
-CleanQtProjects.exe %~dp0\src\MainApp
+CleanQtProjects.exe %~dp0\src
 echo.
 echo.
 
 
 echo removing CleanQtProjects manually
-del %~dp0\src\CleanQtProjects\.qmake.stash
-del %~dp0\src\CleanQtProjects\Makefile
-del %~dp0\src\CleanQtProjects\Makefile.Debug
-del %~dp0\src\CleanQtProjects\Makefile.Release
-rmdir /S /Q %~dp0\src\CleanQtProjects\debug
-rmdir /S /Q %~dp0\src\CleanQtProjects\release
+del %~dp0\utils\CleanQtProjects\.qmake.stash
+del %~dp0\utils\CleanQtProjects\Makefile
+del %~dp0\utils\CleanQtProjects\Makefile.Debug
+del %~dp0\utils\CleanQtProjects\Makefile.Release
+rmdir /S /Q %~dp0\utils\CleanQtProjects\debug
+rmdir /S /Q %~dp0\utils\CleanQtProjects\release
 echo.
 echo.
 
