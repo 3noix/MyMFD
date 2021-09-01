@@ -1,63 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
-// PLATFORM ///////////////////////////////////////////////////////////////////
+// INITIALISATION /////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-let pf = navigator.platform;
-let useTouchEvents = (pf == "iPhone" || pf == "iPad" || pf == "Android");
-let useMouseEvents = (pf == "Win32" || !useTouchEvents);
-
-
-///////////////////////////////////////////////////////////////////////////////
-// MY MFD /////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-let sendKeyMouse = (keyStr,down) => {
-	if (!useMouseEvents) return;
-	sendKey(keyStr,down);
-};
-
-let sendKeyTouch = (keyStr,down) => {
-	if (!useTouchEvents) return;
-	sendKey(keyStr,down);
-};
-
-let sendKey = (keyStr,down) => {
-	let url = window.location.origin + "/key/" + keyStr + "/" + (down ? "1" : "0");
-	let reqhttp = new XMLHttpRequest();
-	reqhttp.open("GET",url,true);
-	reqhttp.send();
-};
-
-let sendButtonMouse = (vji,button,pressed) => {
-	if (!useMouseEvents) return;
-	sendButton(vji,button,pressed);
-};
-
-let sendButtonTouch = (vji,button,pressed) => {
-	if (!useTouchEvents) return;
-	sendButton(vji,button,pressed);
-};
-
-let sendButton = (vji,button,pressed) => {
-	let url = window.location.origin + "/button/" + vji + "/" + button + "/" + (pressed ? "1" : "0");
-	let reqhttp = new XMLHttpRequest();
-	reqhttp.open("GET",url,true);
-	reqhttp.send();
-};
-
-let sendAxis = (vji,axis,value) => {
-	let url = window.location.origin + "/axis/" + vji + "/" + axis + "/" + value;
-	let reqhttp = new XMLHttpRequest();
-	reqhttp.open("GET",url,true);
-	reqhttp.send();
-};
-
-let sendPov = (vji,pov,value) => {
-	let url = window.location.origin + "/pov/" + vji + "/" + pov + "/" + value;
-	let reqhttp = new XMLHttpRequest();
-	reqhttp.open("GET",url,true);
-	reqhttp.send();
-};
-
-// initialisation
 {
 	let keys = document.querySelectorAll("button[data-type=key][data-key]");
 	for (let key of keys) {
