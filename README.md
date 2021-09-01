@@ -7,17 +7,22 @@ The easier way to define your own GUI is to do it using HTML, CSS and Javascript
 
 The PC application can generate keyboard events and vJoy events (if vJoy is installed). vJoy is not mandatory, but if it is not installed, you will be limited to keyboard events. This version works only for Windows. To start, download the latest release.
 
-You can download vJoy here: http://vjoystick.sourceforge.net/site/index.php/download-a-install/download
+You can download vJoy [here](http://vjoystick.sourceforge.net/site/index.php/download-a-install/download).
 
 
 ## Build the project
 
-Building the project is not needed to use it: the simpler way is to use the last provided binary release. If you really want to build it, you will need to:
-- install Qt 5.15: https://www.qt.io/download (and no previous version because QtHttpServer needs at least this version)
-- build QtHttpServer:
-    - download the source here: https://github.com/qt-labs/qthttpserver
-	- with a console "cd" to the "src" directory
-	- type "qmake" then "mingw32-make install" (adapt for a compiler different than MinGW)
+<b>Building the project is not needed to use it: the simpler way is to use the last provided binary release.</b> If you really want to build it, you will need to:
+- Install [Qt](https://www.qt.io/download-qt-installer/). To avoid any Qt version and compilers issues, I recommend Qt 5.15.1 or 5.15.2 with MinGW 8.1.0 32-bit. In the installation / maintenance tool, you should at least check the following items:
+```bash
++-- Qt
+  +-- Qt 5.15.1
+    +-- MinwGW 8.1.0 32-bit
+    +-- Qt Charts
++-- Developer and Designer Tools
+  +-- MinwGW 8.1.0 32-bit
+```
+- run the file build.bat (adjustments will be needed if you don't have MinGW or didn't install it along Qt at the previous step)
 
 
 ## Use the PC app

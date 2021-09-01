@@ -1,7 +1,7 @@
 #include <QCoreApplication>
 #include <QFileInfo>
 #include <iostream>
-#include "HttpServer.h"
+#include "MyMfdHttpServer.h"
 
 struct RemoteRegisteringData
 {
@@ -18,8 +18,12 @@ int main(int argc, char *argv[])
 	QCoreApplication app{argc,argv};
 	QStringList args = app.arguments();
 	args.removeFirst();
-	
-	HttpServer httpServer;
+
+	HttpServerConfig config;
+	config.host = QHostAddress::Any;
+	config.port = 8080;
+	config.verbosity = HttpServerConfig::Verbose::Critical;
+	MyMfdHttpServer httpServer{config};
 	QString errorMessage;
 	
 	// register resources dirs

@@ -8,6 +8,9 @@ echo.
 echo cleaning in progress...
 echo.
 echo.
+CleanQtProjects.exe %~dp0\3rdparty\HttpServer\src
+CleanQtProjects.exe %~dp0\3rdparty\HttpServer\test
+CleanQtProjects.exe %~dp0\3rdparty\HttpServer\mytest
 CleanQtProjects.exe %~dp0\src\MainApp
 echo.
 echo.
