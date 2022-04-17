@@ -33,6 +33,7 @@ class MyMfdHttpServer : public HttpServer
 		HttpPromise processButton(HttpDataPtr data);
 		HttpPromise processAxis(HttpDataPtr data);
 		HttpPromise processPov(HttpDataPtr data);
+		HttpPromise processLog(HttpDataPtr data);
 		
 		QMap<QString,QString> m_resourcesDir;
 		std::vector<std::unique_ptr<VirtualJoystick>> m_virtualJoysticks;

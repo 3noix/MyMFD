@@ -19,6 +19,7 @@
 //  PROCESS BUTTON
 //  PROCESS AXIS
 //  PROCESS POV
+//  PROCESS LOG
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -33,6 +34,7 @@ MyMfdHttpServer::MyMfdHttpServer(const HttpServerConfig &config) : HttpServer{co
 	this->addRoute("GET", "^/button/\\d+/\\d+/\\d$", this, &MyMfdHttpServer::processButton);
 	this->addRoute("GET", "^/axis/\\d+/\\d+/-?\\d(.\\d+)?$", this, &MyMfdHttpServer::processAxis);
 	this->addRoute("GET", "^/pov/\\d+/\\d+/-?\\d(.\\d+)?$", this, &MyMfdHttpServer::processPov);
+	// this->addRoute("GET", "^/log/\\w+$", this, &MyMfdHttpServer::processLog);
 }
 
 // ETHERNET LOCAL IP ADDRESS //////////////////////////////////////////////////
@@ -244,6 +246,19 @@ HttpPromise MyMfdHttpServer::processPov(HttpDataPtr data)
 	}
 	
 	vj->flush();
+	data->response->setStatus(HttpStatus::NoContent);
+	return HttpPromise::resolve(data);
+}
+
+// PROCESS LOG ////////////////////////////////////////////////////////////////
+HttpPromise MyMfdHttpServer::processLog(HttpDataPtr data)
+{
+	// regex = ^/log/\\w+$
+	auto match = data->state["match"].value<QRegularExpressionMatch>();
+	QStringList urlSplit = match.captured(0).split('/',Qt::SkipEmptyParts);
+	QString msg = urlSplit[1];
+	qDebug() << msg;
+
 	data->response->setStatus(HttpStatus::NoContent);
 	return HttpPromise::resolve(data);
 }

@@ -46,3 +46,7 @@ function sendPov(vji, pov, value) {
 	fetch(`${ujpsHttpServerUrl}/pov/${vji}/${pov}/${value}`);
 }
 
+function sendLog(msg) {
+	fetch(`${ujpsHttpServerUrl}/log/${msg}`);
+}
+
