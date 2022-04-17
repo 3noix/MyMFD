@@ -14,17 +14,18 @@
 KeyStrokeGenerator::KeyStrokeGenerator()
 {
 	// modifiers
-	m_keystr2keycode_data["LShift"] = 0xA0;
-	m_keystr2keycode_data["RShift"] = 0xA1;
-	m_keystr2keycode_data["LCtrl"]  = 0xA2;
-	m_keystr2keycode_data["LAlt"]   = 0xA4;
+	m_keystr2keycode_data["LShift"] = VK_LSHIFT;
+	m_keystr2keycode_data["RShift"] = VK_RSHIFT;
+	m_keystr2keycode_data["LCtrl"]  = VK_LCONTROL;
+	m_keystr2keycode_data["LAlt"]   = VK_LMENU;
 	
 	// special keys
-	m_keystr2keycode_data["Backspace"] = 0x08;
-	m_keystr2keycode_data["Tab"]       = 0x09;
-	m_keystr2keycode_data["Return"]    = 0x0D;
-	m_keystr2keycode_data["Escape"]    = 0x1B;
-	m_keystr2keycode_data["Space"]     = 0x20;
+	m_keystr2keycode_data["Backspace"] = VK_BACK;
+	m_keystr2keycode_data["Tab"]       = VK_TAB;
+	m_keystr2keycode_data["Return"]    = VK_RETURN;
+	m_keystr2keycode_data["Escape"]    = VK_ESCAPE;
+	m_keystr2keycode_data["Space"]     = VK_SPACE;
+	m_keystr2keycode_data["CapsLock"]  = VK_CAPITAL;
 	
 	// digits (the ones that are above letters)
 	m_keystr2keycode_data["0"] = 0x30;
@@ -37,7 +38,23 @@ KeyStrokeGenerator::KeyStrokeGenerator()
 	m_keystr2keycode_data["7"] = 0x37;
 	m_keystr2keycode_data["8"] = 0x38;
 	m_keystr2keycode_data["9"] = 0x39;
-	
+
+	// digits (the ones from the numpad)
+	m_keystr2keycode_data["Numpad0"] = VK_NUMPAD0;
+	m_keystr2keycode_data["Numpad1"] = VK_NUMPAD1;
+	m_keystr2keycode_data["Numpad2"] = VK_NUMPAD2;
+	m_keystr2keycode_data["Numpad3"] = VK_NUMPAD3;
+	m_keystr2keycode_data["Numpad4"] = VK_NUMPAD4;
+	m_keystr2keycode_data["Numpad5"] = VK_NUMPAD5;
+	m_keystr2keycode_data["Numpad6"] = VK_NUMPAD6;
+	m_keystr2keycode_data["Numpad7"] = VK_NUMPAD7;
+	m_keystr2keycode_data["Numpad8"] = VK_NUMPAD8;
+	m_keystr2keycode_data["Numpad9"] = VK_NUMPAD9;
+	m_keystr2keycode_data["NumpadMult"] = VK_MULTIPLY;
+	m_keystr2keycode_data["NumpadAdd"]  = VK_ADD;
+	m_keystr2keycode_data["NumpadSub"]  = VK_SUBTRACT;
+	m_keystr2keycode_data["NumpadPt"]   = VK_DECIMAL;
+
 	// letters
 	m_keystr2keycode_data["A"] = 0x41;
 	m_keystr2keycode_data["B"] = 0x42;
@@ -67,18 +84,44 @@ KeyStrokeGenerator::KeyStrokeGenerator()
 	m_keystr2keycode_data["Z"] = 0x5A;
 	
 	// F keys
-	m_keystr2keycode_data["F1"]  = 0x70;
-	m_keystr2keycode_data["F2"]  = 0x71;
-	m_keystr2keycode_data["F3"]  = 0x72;
-	m_keystr2keycode_data["F4"]  = 0x73;
-	m_keystr2keycode_data["F5"]  = 0x74;
-	m_keystr2keycode_data["F6"]  = 0x75;
-	m_keystr2keycode_data["F7"]  = 0x76;
-	m_keystr2keycode_data["F8"]  = 0x77;
-	m_keystr2keycode_data["F9"]  = 0x78;
-	m_keystr2keycode_data["F10"] = 0x79;
-	m_keystr2keycode_data["F11"] = 0x7A;
-	m_keystr2keycode_data["F12"] = 0x7B;
+	m_keystr2keycode_data["F1"]  = VK_F1;
+	m_keystr2keycode_data["F2"]  = VK_F2;
+	m_keystr2keycode_data["F3"]  = VK_F3;
+	m_keystr2keycode_data["F4"]  = VK_F4;
+	m_keystr2keycode_data["F5"]  = VK_F5;
+	m_keystr2keycode_data["F6"]  = VK_F6;
+	m_keystr2keycode_data["F7"]  = VK_F7;
+	m_keystr2keycode_data["F8"]  = VK_F8;
+	m_keystr2keycode_data["F9"]  = VK_F9;
+	m_keystr2keycode_data["F10"] = VK_F10;
+	m_keystr2keycode_data["F11"] = VK_F11;
+	m_keystr2keycode_data["F12"] = VK_F12;
+	m_keystr2keycode_data["F13"] = VK_F13;
+	m_keystr2keycode_data["F14"] = VK_F14;
+	m_keystr2keycode_data["F15"] = VK_F15;
+	m_keystr2keycode_data["F16"] = VK_F16;
+	m_keystr2keycode_data["F17"] = VK_F17;
+	m_keystr2keycode_data["F18"] = VK_F18;
+	m_keystr2keycode_data["F19"] = VK_F19;
+	m_keystr2keycode_data["F20"] = VK_F20;
+	m_keystr2keycode_data["F21"] = VK_F21;
+	m_keystr2keycode_data["F22"] = VK_F22;
+	m_keystr2keycode_data["F23"] = VK_F23;
+	m_keystr2keycode_data["F24"] = VK_F24;
+
+	// WARNING, not validated:
+	// keys that don't have the expected result on my setup
+	m_keystr2keycode_data["PageUp"]     = VK_PRIOR;
+	m_keystr2keycode_data["PageDown"]   = VK_NEXT;
+	m_keystr2keycode_data["End"]        = VK_END;
+	m_keystr2keycode_data["Home"]       = VK_HOME;
+	m_keystr2keycode_data["Insert"]     = VK_INSERT;
+	m_keystr2keycode_data["Delete"]     = VK_DELETE;
+	m_keystr2keycode_data["ArrowLeft"]  = VK_LEFT;
+	m_keystr2keycode_data["ArrowRight"] = VK_RIGHT;
+	m_keystr2keycode_data["ArrowUp"]    = VK_UP;
+	m_keystr2keycode_data["ArrowDown"]  = VK_DOWN;
+	m_keystr2keycode_data["NumpadDiv"]  = VK_DIVIDE;
 }
 
 // KEYSTR 2 KEYCODE ///////////////////////////////////////////////////////////
