@@ -10,6 +10,11 @@ The PC application can generate keyboard events and vJoy events (if vJoy is inst
 You can download vJoy [here](http://vjoystick.sourceforge.net/site/index.php/download-a-install/download).
 
 
+## Remark
+
+This project was very quickly done by extracting a small part of the bigger [UJPS](https://github.com/3noix/UJPS) project. If you want to use your custom web GUI in conjunction with your joysticks, I suggest you to take a look at UJPS.
+
+
 ## Build the project
 
 <b>Building the project is not needed to use it: the simpler way is to use the last provided binary release.</b> If you really want to build it, you will need to:
@@ -18,7 +23,6 @@ You can download vJoy [here](http://vjoystick.sourceforge.net/site/index.php/dow
 +-- Qt
   +-- Qt 5.15.1
     +-- MinwGW 8.1.0 32-bit
-    +-- Qt Charts
 +-- Developer and Designer Tools
   +-- MinwGW 8.1.0 32-bit
 ```
