@@ -1,51 +1,48 @@
-///////////////////////////////////////////////////////////////////////////////
-// PLATFORM ///////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-let pf = navigator.platform;
-let useTouchEvents = (pf == "iPhone" || pf == "iPad" || pf == "Android");
-let useMouseEvents = (pf == "Win32" || !useTouchEvents);
+// TOUCH DEVICE? //////////////////////////////////////////////////////////////
+function isTouchDevice() {
+	return ["iPhone","iPad","Android"].includes(navigator.platform);
+	// return (window.ontouchstart != undefined || navigator.maxTouchPoints > 0); // e.g. does not work on iPhone+Safari
+}
+
+const useTouchEvents = isTouchDevice();
+const useMouseEvents = !useTouchEvents;
+const ujpsHttpServerUrl = window.location.origin;
 
 
-///////////////////////////////////////////////////////////////////////////////
 // MY MFD FUNCTIONS ///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-function sendKeyMouse(keyStr,down) {
+function sendKeyMouse(keyStr, down) {
 	if (!useMouseEvents) return;
 	sendKey(keyStr,down);
 }
 
-function sendKeyTouch(keyStr,down) {
+function sendKeyTouch(keyStr, down) {
 	if (!useTouchEvents) return;
 	sendKey(keyStr,down);
 }
 
-function sendKey(keyStr,down) {
-	let url = window.location.origin + "/key/" + keyStr + "/" + (down ? "1" : "0");
-	fetch(url);
+function sendKey(keyStr, down) {
+	fetch(`${ujpsHttpServerUrl}/key/${keyStr}/${down ? "1" : "0"}`);
 }
 
-function sendButtonMouse(vji,button,pressed) {
+function sendButtonMouse(vji, button, pressed) {
 	if (!useMouseEvents) return;
 	sendButton(vji,button,pressed);
 }
 
-function sendButtonTouch(vji,button,pressed) {
+function sendButtonTouch(vji, button, pressed) {
 	if (!useTouchEvents) return;
 	sendButton(vji,button,pressed);
 }
 
-function sendButton(vji,button,pressed) {
-	let url = window.location.origin + "/button/" + vji + "/" + button + "/" + (pressed ? "1" : "0");
-	fetch(url);
+function sendButton(vji, button, pressed) {
+	fetch(`${ujpsHttpServerUrl}/button/${vji}/${button}/${pressed ? "1" : "0"}`);
 }
 
-function sendAxis(vji,axis,value) {
-	let url = window.location.origin + "/axis/" + vji + "/" + axis + "/" + value;
-	fetch(url);
+function sendAxis(vji, axis, value) {
+	fetch(`${ujpsHttpServerUrl}/axis/${vji}/${axis}/${value}`);
 }
 
-function sendPov(vji,pov,value) {
-	let url = window.location.origin + "/pov/" + vji + "/" + pov + "/" + value;
-	fetch(url);
+function sendPov(vji, pov, value) {
+	fetch(`${ujpsHttpServerUrl}/pov/${vji}/${pov}/${value}`);
 }
 
