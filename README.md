@@ -5,9 +5,9 @@ The goal of this project is to provide you a way to use your own GUI on your mob
 
 The easier way to define your own GUI is to do it using HTML, CSS and Javascript (using the provided test example as a starting point). But you can also create it with the tech you want and just send HTTP requests to the PC application. The different ways to use it will be discussed in the paragraphs below.
 
-The PC application can generate keyboard events and vJoy events (if vJoy is installed). vJoy is not mandatory, but if it is not installed, you will be limited to keyboard events. This version works only for Windows. To start, download the latest release.
+The PC application can generate keyboard events and vJoy events (if vJoy is installed). vJoy is not mandatory, but if it is not installed, you will be limited to keyboard events. This version works only for Windows. To start, download the [latest release](https://github.com/3noix/MyMFD/releases).
 
-You can download vJoy [here](http://vjoystick.sourceforge.net/site/index.php/download-a-install/download).
+You can download vJoy [here](https://github.com/njz3/vJoy/).
 
 
 ## Remark
@@ -17,7 +17,7 @@ This project was very quickly done by extracting a small part of the bigger [UJP
 
 ## Build the project
 
-<b>Building the project is not needed to use it: the simpler way is to use the last provided binary release.</b> If you really want to build it, you will need to:
+<b>Building the project is not needed to use it: the simpler way is to use the [last provided binary release](https://github.com/3noix/MyMFD/releases).</b> If you really want to build it, you will need to:
 - Install [Qt](https://www.qt.io/download-qt-installer/). To avoid any Qt version and compilers issues, I recommend Qt 5.15.1 or 5.15.2 with MinGW 8.1.0 32-bit. In the installation / maintenance tool, you should at least check the following items:
 ```bash
 +-- Qt
