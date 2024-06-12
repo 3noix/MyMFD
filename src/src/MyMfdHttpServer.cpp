@@ -24,8 +24,10 @@
 
 
 // CONSTRUCTEUR ///////////////////////////////////////////////////////////////
-MyMfdHttpServer::MyMfdHttpServer(const HttpServerConfig &config) : HttpServer{config}
+MyMfdHttpServer::MyMfdHttpServer(const HttpServerConfig &config, bool noKeyStroke) : HttpServer{config}
 {
+	m_noKeyStroke = noKeyStroke;
+
 	// routing for files (typically html, css, js, images, ...)
 	this->addRoute("GET", "^/file/(\\w|.|-)+/(\\w|.|-)+$", this, &MyMfdHttpServer::processFile);
 
@@ -147,6 +149,11 @@ HttpPromise MyMfdHttpServer::processFile(HttpDataPtr data)
 // PROCESS KEY ////////////////////////////////////////////////////////////////
 HttpPromise MyMfdHttpServer::processKey(HttpDataPtr data)
 {
+	if (m_noKeyStroke) {
+		data->response->setStatus(HttpStatus::Forbidden);
+		return HttpPromise::reject(data);
+	}
+
 	// regex = ^/key/\\w+(\\+\\w+)?/\\d$
 	auto match = data->state["match"].value<QRegularExpressionMatch>();
 	QStringList urlSplit = match.captured(0).split('/',Qt::SkipEmptyParts);

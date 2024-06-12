@@ -13,7 +13,7 @@
 class MyMfdHttpServer : public HttpServer
 {
 	public:
-		MyMfdHttpServer(const HttpServerConfig &config);
+		MyMfdHttpServer(const HttpServerConfig &config, bool noKeyStroke);
 		MyMfdHttpServer(const MyMfdHttpServer &other) = delete;
 		MyMfdHttpServer(MyMfdHttpServer &&other) = delete;
 		MyMfdHttpServer& operator=(const MyMfdHttpServer &other) = delete;
@@ -35,6 +35,7 @@ class MyMfdHttpServer : public HttpServer
 		HttpPromise processPov(HttpDataPtr data);
 		HttpPromise processLog(HttpDataPtr data);
 		
+		bool m_noKeyStroke;
 		QMap<QString,QString> m_resourcesDir;
 		std::vector<std::unique_ptr<VirtualJoystick>> m_virtualJoysticks;
 		KeyStrokeGenerator keyStrokeGenerator;

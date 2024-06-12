@@ -31,7 +31,13 @@ This project was very quickly done by extracting a small part of the bigger [UJP
 
 ## Use the PC app
 
-The PC app is very basic, it is just a console app. To provide to the app the path to your GUI files (and the indexes of the vJoy devices to use), you have to use the arguments of the app. The easier way to do is to use a bat file. Take a look at the verbosely commented example bat file below (the lines starting with "REM" are comments):
+The PC app is very basic, it is just a console app. To provide to the app the required info, you have to use the command line arguments. The easier way to do is to use a bat file. Here are the full list of the available options:
+- **mandatory (at least one)**: to specify the directory to your web files, you have to use the `-remote=(name,path)` argument. You can specify several "remotes" this way: `-remote=(name1,path1) -remote=(name2,path2)`
+- **optional**: if you want to use vJoy devices, they must be acquired by the app. To do so, you have to provide their indexes (number from 1 to 16) this way: `-vjoy=1` or `-vjoy=1+3+6`
+- **optional**: choose the port to use with the `-port=1234` syntax. If not or wrongly provided, the port 8080 will be used by default.
+- **optional**: if you want to forbid keystroke (more info in [this section](#other)), use the `-nokeystroke` argument. If not provided, the keystrokes generation is enabled by default.
+
+
 
 
 ```Bat
@@ -42,20 +48,11 @@ REM "%~dp0" designates the directory of this bat file
 set EXECUTABLE=%~dp0\..\bin\MyMFD.exe
 
 REM Computes the path to the dir containing the files of the GUI (html, css, js, ...)
-set REMOTEDIR1=%~dp0\test
-
-REM If you want to be able to sollicitate vJoy devices, they must be acquired by the app.
-REM To do so, you have to provide them as arguments: for vjoy devices #1, 3 and 6, type:
-REM -vjoy=1+3+6
-
-REM To specify the directory to your web files, you have to use the "-remote=(xx,yy)" arg.
-REM You can specify several ones this way: "-remote=(aa,bb) -remote=(cc,dd)
-
-REM Choose the port to use with "-port=1234" syntax. If not or wrongly provided,
-REM the port 8080 will be used by default.
+set REMOTEDIR1=%~dp0\remote1
+set REMOTEDIR2=%~dp0\remote2
 
 REM Run the app with the arguments
-%EXECUTABLE% -vjoy=1 -remote=(name,%REMOTEDIR1%) -port=1234
+%EXECUTABLE% -vjoy=1+2 -remote=(name1,%REMOTEDIR1%) -remote=(name2,%REMOTEDIR2%) -port=1234 -nokeystroke
 
 echo.
 pause
@@ -126,4 +123,4 @@ http://xxx.xxx.xxx.xxx:8080/axis/3/1/0.35 (to set at 0.35 the value of the first
 
 You can consult the list of the currently supported keys in this file: *src/MainApp/code/KeyStrokeGenerator.cpp*
 
-As this program can generate keystrokes from received http requests, and as the app currently listen to any input connection, it may be a **security issue**: if someone is able to establish a connection to your computer and does the right http requests, he/she can generate the keystrokes he/she wants. So close the PC app when you don't use it. I am also thinking about disabling the keystrokes on demand (using another argument) for people that would only want to use vJoy devices.
+As this program can generate keystrokes from received http requests, and as the app currently listen to any input connection, it may be a **security issue**: if someone is able to establish a connection to your computer and does the right http requests, he/she can generate the keystrokes he/she wants. So close the PC app when you don't use it, or if you don't use key strokes (i.e. only vJoy devices) you can specify the `-nokeystroke` command line option.

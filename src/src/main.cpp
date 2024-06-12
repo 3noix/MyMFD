@@ -10,6 +10,7 @@ struct RemoteRegisteringData
 };
 
 unsigned short getServerPort(const QStringList &args);
+bool getNoKeyStrokeGeneration(const QStringList &args);
 std::vector<RemoteRegisteringData> getRemoteData(const QStringList &args);
 std::vector<uint> getVjoyIndexes(const QStringList &args);
 
@@ -22,6 +23,7 @@ int main(int argc, char *argv[])
 
 	// parse arguments
 	unsigned short port = getServerPort(args);
+	bool noKeyStroke = getNoKeyStrokeGeneration(args);
 	std::vector<RemoteRegisteringData> remoteDirs = getRemoteData(args);
 	std::vector<uint> vjoyIndexes = getVjoyIndexes(args);
 
@@ -30,7 +32,7 @@ int main(int argc, char *argv[])
 	config.host = QHostAddress::Any;
 	config.port = port;
 	config.verbosity = HttpServerConfig::Verbose::Critical;
-	MyMfdHttpServer httpServer{config};
+	MyMfdHttpServer httpServer{config, noKeyStroke};
 	QString errorMessage;
 	
 	// register resources dirs
@@ -89,6 +91,12 @@ unsigned short getServerPort(const QStringList &args)
 	}
 
 	return 8080;
+}
+
+// GET NO KEY STROKE GENERATION ///////////////////////////////////////////////
+bool getNoKeyStrokeGeneration(const QStringList &args)
+{
+	return args.contains("-nokeystroke");
 }
 
 // GET REMOTE DATA ////////////////////////////////////////////////////////////
