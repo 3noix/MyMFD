@@ -9,6 +9,7 @@ struct RemoteRegisteringData
 	QString dirPath;
 };
 
+unsigned short getServerPort(const QStringList &args);
 std::vector<RemoteRegisteringData> getRemoteData(const QStringList &args);
 std::vector<uint> getVjoyIndexes(const QStringList &args);
 
@@ -19,15 +20,20 @@ int main(int argc, char *argv[])
 	QStringList args = app.arguments();
 	args.removeFirst();
 
+	// parse arguments
+	unsigned short port = getServerPort(args);
+	std::vector<RemoteRegisteringData> remoteDirs = getRemoteData(args);
+	std::vector<uint> vjoyIndexes = getVjoyIndexes(args);
+
+	// configure server
 	HttpServerConfig config;
 	config.host = QHostAddress::Any;
-	config.port = 8080;
+	config.port = port;
 	config.verbosity = HttpServerConfig::Verbose::Critical;
 	MyMfdHttpServer httpServer{config};
 	QString errorMessage;
 	
 	// register resources dirs
-	std::vector<RemoteRegisteringData> remoteDirs = getRemoteData(args);
 	if (remoteDirs.size() == 0)
 	{
 		std::cout << "No remote dir specified" << std::endl;
@@ -50,7 +56,7 @@ int main(int argc, char *argv[])
 	}
 	
 	// acquire virtual joysticks if needed
-	for (int index : getVjoyIndexes(args))
+	for (int index : vjoyIndexes)
 	{
 		if (!httpServer.registerVirtualJoystick(index,errorMessage))
 		{
@@ -67,6 +73,23 @@ int main(int argc, char *argv[])
 	return app.exec();
 }
 
+
+// GET SERVER PORT ////////////////////////////////////////////////////////////
+unsigned short getServerPort(const QStringList &args)
+{
+	QRegExp regex{"^-port=(\\d+)$"};
+	for (const QString &arg : args)
+	{
+		if (regex.exactMatch(arg))
+		{
+			bool ok = false;
+			unsigned short port = regex.cap(1).toUShort(&ok);
+			return ok ? port : 8080;
+		}
+	}
+
+	return 8080;
+}
 
 // GET REMOTE DATA ////////////////////////////////////////////////////////////
 std::vector<RemoteRegisteringData> getRemoteData(const QStringList &args)

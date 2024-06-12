@@ -51,8 +51,11 @@ REM -vjoy=1+3+6
 REM To specify the directory to your web files, you have to use the "-remote=(xx,yy)" arg.
 REM You can specify several ones this way: "-remote=(aa,bb) -remote=(cc,dd)
 
+REM Choose the port to use with "-port=1234" syntax. If not or wrongly provided,
+REM the port 8080 will be used by default.
+
 REM Run the app with the arguments
-%EXECUTABLE% -vjoy=1 -remote=(name,%REMOTEDIR1%)
+%EXECUTABLE% -vjoy=1 -remote=(name,%REMOTEDIR1%) -port=1234
 
 echo.
 pause
